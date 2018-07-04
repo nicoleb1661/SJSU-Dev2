@@ -16,14 +16,12 @@ DEVICE_SIZEC   = arm-none-eabi-size
 DEVICE_OBJCOPY = arm-none-eabi-objcopy
 DEVICE_NM      = arm-none-eabi-nm
 # IMPORTANT: Must be accessible via the PATH variable!!!
-# Affects what DBC is generated for SJSUOne board
-TEST_GROUP     ?=
-HOST_CC        ?= gcc-7
-HOST_CPPC      ?= g++-7
-HOST_OBJDUMP   ?= objdump-7
-HOST_SIZEC     ?= size-7
-HOST_OBJCOPY   ?= objcopy-7
-HOST_NM        ?= nm-7
+HOST_CC        ?= gcc
+HOST_CPPC      ?= g++
+HOST_OBJDUMP   ?= objdump
+HOST_SIZEC     ?= size
+HOST_OBJCOPY   ?= objcopy
+HOST_NM        ?= nm
 
 ifeq ($(MAKECMDGOALS), test)
 CC      = $(HOST_CC)
@@ -239,30 +237,19 @@ DEPENDENCIES = $(OBJECT_FILES:.o=.d)
 .DEFAULT_GOAL := default
 # Tell make that these recipes don't have a end product
 .PHONY: build cleaninstall telemetry monitor show-lists clean flash telemetry \
-        presubmit openocd debug multi-debug default
+        presubmit default
 print-%  : ; @echo $* = $($*)
 
 # When the user types just "make" this should appear to them
 help:
 	@echo "List of available targets:"
-	@echo
-	@echo "    build        - builds firmware project"
-	@echo "    bootloader   - builds firmware using bootloader linker"
-	@echo "    help         - shows this menu"
-	@echo "    flash        - builds and installs firmware on to SJOne board"
-	@echo "    telemetry    - will launch telemetry interface"
-	@echo "    clean        - cleans project folder"
-	@echo "    cleaninstall - cleans, builds, and installs firmware"
-	@echo "    show-lists   - Shows all object files that will be compiled"
-	@echo "    presubmit    - run presubmit checks script"
-	@echo "    openocd      - run openocd with the sjtwo.cfg file"
-	@echo "    debug        - run arm gdb with current projects .elf file"
-	@echo "    multi-debug  - run multiarch gdb with current projects .elf file"
-	@echo
-
-default: help
-    # Just shows the help menu
-bootloader: build
+	@echo "    build         - builds firmware project"
+	@echo "    flash         - builds and installs firmware on to SJOne board"
+	@echo "    telemetry     - will launch telemetry interface"
+	@echo "    clean         - cleans project folder"
+	@echo "    cleaninstall  - cleans, builds and installs firmware"
+	@echo "    show-lists    - Shows all object files that will be compiled"
+	@echo "    presubmit     - run presubmit script and "
 # Build recipe
 application: build
 build: $(DBC_DIR) $(OBJ_DIR) $(BIN_DIR) $(SIZE) $(LIST) $(HEX) $(BINARY)
@@ -439,21 +426,5 @@ $(TEST_EXEC): $(TEST_FRAMEWORK) $(OBJECT_FILES)
 	@echo 'Finished building: $<'
 	@echo ' '
 
-lint:
-	@python2.7 $(TOOLS)/cpplint/cpplint.py $(LINT_FILES)
-
-tidy:
-	@$(CLANG_TIDY) -extra-arg=-std=c++17 $(LINT_FILES) -- -std=c++17 \
-	$(INCLUDES) -D CLANG_TIDY=1
-
 presubmit:
-	@$(TOOLS)/presubmit.sh
-
-openocd:
-	openocd -f $(TOOLS)/OpenOCD/sjtwo.cfg
-
-debug:
-	arm-none-eabi-gdb -ex "target remote :3333" $(EXECUTABLE)
-
-multi-debug:
-	gdb-multiarch -ex "target remote :3333" $(EXECUTABLE)
+	$(TOOLS)/presubmit.sh
