@@ -7,7 +7,7 @@ bool I2CBackpack::init() //initializes the LCD
     return true;
 }
 
-void I2CBackpack::set8BitMode()
+void I2CBackpack::set4BitMode()
 {
 
 }
