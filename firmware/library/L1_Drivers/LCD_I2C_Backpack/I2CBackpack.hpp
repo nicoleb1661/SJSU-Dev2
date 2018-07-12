@@ -7,7 +7,7 @@ class I2CBackpack
 
     public:
         bool init();
-        void set8BitMode();
+        void set4BitMode();
         void clearScreen();
         void setPosition(uint8_t row, uint8_t  col);
         void returnHome();
