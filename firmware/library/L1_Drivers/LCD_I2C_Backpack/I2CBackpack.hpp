@@ -25,7 +25,7 @@ class I2CBackpack
         void setFont();
 
     private:
-        uint8_t address;
+        uint8_t deviceAddress;
         uint8_t col;
         uint8_t row;
         void write(uint8_t address, uint8_t data);
