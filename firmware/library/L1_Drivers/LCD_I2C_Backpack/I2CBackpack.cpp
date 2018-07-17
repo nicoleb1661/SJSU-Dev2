@@ -103,10 +103,10 @@ void I2CBackpack::SetFont()
 
 void I2CBackpack::Write(uint8_t address, uint8_t data)
 {
-    writeReg(device_address, address, data);
+    writeReg(device_address_, address, data);
 }
 
 void I2CBackpack::Read(uint8_t address) const
 {
-    readReg(device_address, address);
+    readReg(device_address_, address);
 }
