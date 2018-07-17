@@ -1,15 +1,19 @@
 
 #include "I2CBackpack.hpp"
+#include "i2c_base.hpp"
+
+//Slave address: 40h for write, 41h for read
 
 bool I2CBackpack::init() //initializes the LCD
 {
-
+    //Set slave address: A2-A0 all set to Vss (ground)
     return true;
 }
 
+//Pin configuration requires 4 bit data transfer
 void I2CBackpack::set4BitMode()
 {
-
+    write(0x2, 0x0);
 }
 
 void I2CBackpack::clearScreen()
@@ -95,4 +99,14 @@ void I2CBackpack::shiftCursorRight()
 void I2CBackpack::setFont()
 {
     
-} 
+}
+
+void I2CBackpack::write(uint8_t address, uint8_t data)
+{
+    writeReg(device_address, address, data);
+}
+
+void I2CBackpack::read(uint8_t address) const
+{
+    readReg(device_address, address);
+}
