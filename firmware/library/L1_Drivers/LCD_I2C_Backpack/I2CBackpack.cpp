@@ -1,6 +1,5 @@
 
 #include "I2CBackpack.hpp"
-#include "i2c_base.hpp"
 
 //Slave address: 40h for write, 41h for read
 

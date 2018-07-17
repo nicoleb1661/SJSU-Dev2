@@ -1,14 +1,16 @@
+#include "Interface.hpp"
+
 #ifndef I2CBackpack_H
 #define I2CBackpack_H
-#include<stdint.h>
 
-class I2CBackpack : public Interface
+
+class I2CBackpack : public Interface 
 {
 
     public:
         I2CBackpack();
         bool Init() override;
-        void Set4BitMode() override;
+        void Set4BitMode() override; 
         void ClearScreen() override;
         void SetPosition(uint8_t row, uint8_t  col) override;
         void ReturnHome() override;
