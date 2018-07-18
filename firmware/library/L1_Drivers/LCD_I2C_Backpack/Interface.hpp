@@ -3,7 +3,6 @@
 #include <cstdint>
 //Import SJOne libraries to be used for testing
 #include "L2_Drivers/base/i2c_base.hpp"
-#include "L4_IO/gpio.hpp"
 
 #ifndef BackpackInterface_H
 #define BackpackInterface_H
@@ -17,10 +16,11 @@ public:
     virtual void SetPosition(uint8_t row, uint8_t col);
     virtual void ReturnHome();
     virtual void PrintChar();
-    virtual void DisplayCursor();
-    virtual void NoCursor();
-    virtual void BlinkChar();
-    virtual void SolidChar();
+    //virtual void DisplayCursor();
+    //virtual void NoCursor();
+    //virtual void BlinkChar();
+    //virtual void SolidChar();
+    virtual void CursorControl(bool show_cursor, bool blink_cursor);
     virtual void SetLineDisplay(uint8_t lines);
     virtual bool CheckBusyFlag();
     virtual void DisplayOn();

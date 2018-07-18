@@ -21,7 +21,7 @@ void I2CBackpack::ClearScreen()
     //00_00-0000-0001
     
     //Sends 20H to all the DDRAM addresses
-    write(0x7F, 0x20);
+    Write(0x01, 0x00);
     //Set the DDRAM address back to 0 returns the display to its original status 
     ReturnHome();
 } 
@@ -36,6 +36,7 @@ void I2CBackpack::ReturnHome()
     //Set the DDRAM address to 0 
     //Return the screen into its original state
     //Move cursor to the left side of the screen (ensure its the first line if using multiple lines)
+    Write(0x02, 0x00);
 
 }
 
@@ -44,25 +45,11 @@ void I2CBackpack::PrintChar()
 
 }
 
-void I2CBackpack::DisplayCursor()
+void I2CBackpack::CursorControl(bool show_cursor, bool blink_cursor)
 {
 
 }
 
-void I2CBackpack::NoCursor()  //No cursor will show on the display
-{
-
-}
-
-void I2CBackpack::BlinkChar() //The current character will blink 
-{
-
-}
-
-void I2CBackpack::SolidChar() //The current character won’t blink
-{
-
-}
 
 void I2CBackpack::SetLineDisplay(uint8_t lines) //Select 1, 2, or 4 lines
 {
@@ -77,12 +64,16 @@ bool I2CBackpack::CheckBusyFlag()
 
 void I2CBackpack::DisplayOn()
 {
-
+    //D is 1 to turn on display
+    //C 1 to display the cursor 
+    //B 1 to display blinking cursor 
 }
 
 void I2CBackpack::DisplayOff()
 {
-
+    //D set to 0
+    //C 0 to hide the cursor 
+    //B 0 for solid cursor 
 }
 
 void I2CBackpack::ShiftCursorLeft()
