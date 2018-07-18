@@ -16,10 +16,6 @@ public:
     virtual void SetPosition(uint8_t row, uint8_t col);
     virtual void ReturnHome();
     virtual void PrintChar();
-    //virtual void DisplayCursor();
-    //virtual void NoCursor();
-    //virtual void BlinkChar();
-    //virtual void SolidChar();
     virtual void CursorControl(bool show_cursor, bool blink_cursor);
     virtual void SetLineDisplay(uint8_t lines);
     virtual bool CheckBusyFlag();
