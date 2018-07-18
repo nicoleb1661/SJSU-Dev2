@@ -62,26 +62,14 @@ bool I2CBackpack::CheckBusyFlag()
     return true;
 } 
 
-void I2CBackpack::DisplayOn()
+void I2CBackpack::DisplayControl()
 {
     //D is 1 to turn on display
     //C 1 to display the cursor 
     //B 1 to display blinking cursor 
 }
 
-void I2CBackpack::DisplayOff()
-{
-    //D set to 0
-    //C 0 to hide the cursor 
-    //B 0 for solid cursor 
-}
-
-void I2CBackpack::ShiftCursorLeft()
-{
-
-}
-
-void I2CBackpack::ShiftCursorRight()
+void I2CBackpack::ShiftCursor()
 {
 
 }

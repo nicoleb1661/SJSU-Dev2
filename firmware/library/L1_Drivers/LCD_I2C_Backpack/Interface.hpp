@@ -19,10 +19,8 @@ public:
     virtual void CursorControl(bool show_cursor, bool blink_cursor);
     virtual void SetLineDisplay(uint8_t lines);
     virtual bool CheckBusyFlag();
-    virtual void DisplayOn();
-    virtual void DisplayOff();
-    virtual void ShiftCursorLeft();
-    virtual void ShiftCursorRight();
+    virtual void DisplayControl();
+    virtual void ShiftCursor();
     virtual void SetFont();
 }
 
