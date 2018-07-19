@@ -41,7 +41,6 @@ class I2CBackpack : public BackpackInterface
     void ShiftCursor() override;
     void SetFont() override;
     ~I2CBackpack();
-    //
  private:
     uint8_t device_address_;
     uint8_t col_;
