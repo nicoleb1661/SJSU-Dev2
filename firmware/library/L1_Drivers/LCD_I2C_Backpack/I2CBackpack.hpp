@@ -32,12 +32,10 @@ class I2CBackpack : public BackpackInterface
     void SetPosition(uint8_t row, uint8_t  col) override;
     void ReturnHome() override;
     void PrintChar() override;
-    // CursorControl() Replaces NoCursor, DisplayCursor, BlinkChar, and SolidChar
-    void CursorControl(bool show_cursor, bool blink_cursor) override;
-    // Select 1, 2, or 4 line display
-    void SetLineDisplay(uint8_t lines) override;
-    bool CheckBusyFlag() override;
-    void DisplayControl() override;
+    void CursorControl(bool show_cursor, bool blink_cursor) override; //Replaces NoCursor DisplayCursor, BlinkChar, and SolidChar
+    void SetLineDisplay(uint8_t lines) override; //Select 1, 2, or 4 line display
+    bool CheckBusyFlag() override;//Check busy flag
+    void DisplayControl(bool on, bool show_cursor, bool blink_cursor) override;
     void ShiftCursor() override;
     void SetFont() override;
     ~I2CBackpack();

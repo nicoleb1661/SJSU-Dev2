@@ -1,7 +1,7 @@
 
 #include "I2CBackpack.hpp"
 
-//Slave address: 40h for write, 41h for read
+// Slave address: 40h for write, 41h for read
 
 I2CBackpack::I2CBackpack(uint8_t address_read, uint8_t address_write)
 {
@@ -23,7 +23,7 @@ bool I2CBackpack::Init() //initializes the LCD
     return true;
 }
 
-//Pin configuration requires 4 bit data transfer
+// Pin configuration requires 4 bit data transfer
 void I2CBackpack::Set4BitMode()
 {
     Write(0x2, 0x0);
@@ -31,12 +31,12 @@ void I2CBackpack::Set4BitMode()
 
 void I2CBackpack::ClearScreen()
 {
-    //Set the command to clear screen:
-    //00_00-0000-0001
+    // Set the command to clear screen:
+    // 00_00-0000-0001
     
-    //Sends 20H to all the DDRAM addresses
+    // Sends 20H to all the DDRAM addresses
     Write(0x01, 0x00);
-    //Set the DDRAM address back to 0 returns the display to its original status 
+    // Set the DDRAM address back to 0 returns the display to its original status 
     ReturnHome();
 } 
 
@@ -47,9 +47,9 @@ void I2CBackpack::SetPosition(uint8_t row, uint8_t col)
 
 void I2CBackpack::ReturnHome()
 {
-    //Set the DDRAM address to 0 
-    //Return the screen into its original state
-    //Move cursor to the left side of the screen (ensure its the first line if using multiple lines)
+    // Set the DDRAM address to 0 
+    // Return the screen into its original state
+    // Move cursor to the left side of the screen (ensure its the first line if using multiple lines)
     Write(0x02, 0x00);
 
 }
@@ -61,11 +61,20 @@ void I2CBackpack::PrintChar()
 
 void I2CBackpack::CursorControl(bool show_cursor, bool blink_cursor)
 {
+    if(show_cursor){  // DB1 == 1
 
+    }else{
+
+    }
+    if(blink_cursor){  // DB0 == 1
+
+    }else{
+
+    }
 }
 
 
-void I2CBackpack::SetLineDisplay(uint8_t lines) //Select 1, 2, or 4 lines
+void I2CBackpack::SetLineDisplay(uint8_t lines)
 {
 
 }
@@ -76,11 +85,21 @@ bool I2CBackpack::CheckBusyFlag()
     return true;
 } 
 
-void I2CBackpack::DisplayControl()
+void I2CBackpack::DisplayControl(bool on, bool show_cursor, bool blink_cursor)
 {
-    //D is 1 to turn on display
-    //C 1 to display the cursor 
-    //B 1 to display blinking cursor 
+    // D is 1 to turn on display
+    // C 1 to display the cursor 
+    // B 1 to display blinking cursor 
+    if(on){  // Turn on display
+        if(show_cursor || blink_cursor){  
+            CursorControl(show_cursor, blink_cursor);
+        }
+        else{  // If both are false, cursor won't show or blink
+            CursorControl(show_cursor, blink_cursor);
+        }
+    }else{  // Turn off display
+
+    }
 }
 
 void I2CBackpack::ShiftCursor()
