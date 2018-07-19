@@ -3,9 +3,23 @@
 
 //Slave address: 40h for write, 41h for read
 
+I2CBackpack::I2CBackpack(uint8_t address_read, uint8_t address_write)
+{
+    device_address_read_ = address_read;
+    device_address_write_ = address_write;
+}
+
 bool I2CBackpack::Init() //initializes the LCD
 {
-    //Set slave address: A2-A0 all set to Vss (ground)
+    uint32_t pclk = 48;
+    uint32_t bus_rate = 100;
+    
+    //delay to allow LCD internal reset to complete
+    delay_ms(10);
+    //call I2C driver init
+    init(pclk, bus_rate);
+    //Set all Backpack ports to Output HIGH
+    Write(0xF, 0xF);
     return true;
 }
 
@@ -81,10 +95,10 @@ void I2CBackpack::SetFont()
 
 void I2CBackpack::Write(uint8_t address, uint8_t data)
 {
-    writeReg(device_address_, address, data);
+    writeReg(device_address_write_, address, data);
 }
 
 void I2CBackpack::Read(uint8_t address) const
 {
-    readReg(device_address_, address);
+    readReg(device_address_read_, address);
 }
