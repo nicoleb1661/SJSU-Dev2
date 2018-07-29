@@ -61,20 +61,26 @@ void I2CBackpack::PrintChar()
 
 void I2CBackpack::CursorControl(bool show_cursor, bool blink_cursor)
 {
+    uint8_t cursor_option = 0;
+
     if(show_cursor){  // DB1 == 1
-
+        cursor_option = kCursorOn | kDisplayOn;
+        Write(0x00, cursor_option);
     }else{
-
+        cursor_option = kCursorOff | kDisplayOn;
+        Write(0x00, cursor_option);
     }
     if(blink_cursor){  // DB0 == 1
-
+        cursor_option = kBlinkOff | kDisplayOff;
+        Write(0x00, cursor_option);
     }else{
-
+        cursor_option = kBlinkOff | kDisplyOn;
+        Write(0x00, cursor_option);
     }
 }
 
 
-void I2CBackpack::SetLineDisplay(uint8_t lines)
+void I2CBackpack::SetLineDisplay(DisplayLines lines)
 {
 
 }
@@ -92,13 +98,14 @@ void I2CBackpack::DisplayControl(bool on, bool show_cursor, bool blink_cursor)
     // B 1 to display blinking cursor 
     if(on){  // Turn on display
         if(show_cursor || blink_cursor){  
+            Write(0x00, kDisplayOn);
             CursorControl(show_cursor, blink_cursor);
         }
         else{  // If both are false, cursor won't show or blink
             CursorControl(show_cursor, blink_cursor);
         }
     }else{  // Turn off display
-
+        Write(0x00, kDisplayOff);
     }
 }
 
@@ -107,7 +114,7 @@ void I2CBackpack::ShiftCursor()
 
 }
 
-void I2CBackpack::SetFont()
+void I2CBackpack::SetFont(FontSize size)
 {
     
 }
