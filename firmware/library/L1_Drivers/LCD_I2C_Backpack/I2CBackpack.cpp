@@ -172,6 +172,11 @@ void I2CBackpack::SetFont(FontSize size)
     }
 }
 
+I2CBackpack::~I2CBackpack()
+{
+
+}
+
 void I2CBackpack::Write(uint8_t address, uint8_t data)
 {
     writeReg(device_address_write_, address, data);
