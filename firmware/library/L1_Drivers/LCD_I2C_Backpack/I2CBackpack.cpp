@@ -1,9 +1,9 @@
 
-#include "I2CBackpack.hpp"
+#include "LcdI2cBackpack.hpp"
 
 // Slave address: 40h for write, 41h for read
 
-LcdI2cBackpack::I2CBackpack(uint8_t address_read, uint8_t address_write)
+LcdI2cBackpack::LcdI2cBackpack(uint8_t address_read, uint8_t address_write)
 {
     device_address_read_ = address_read;
     device_address_write_ = address_write;

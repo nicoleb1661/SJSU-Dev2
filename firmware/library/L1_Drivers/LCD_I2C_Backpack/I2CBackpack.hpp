@@ -5,7 +5,7 @@
 // Import SJOne libraries to be used for testing
 #include "L2_Drivers/base/i2c_base.hpp"
 
-class BackpackInterface
+class LcdBackpackInterface
 {
 public:
     enum FontSize : uint8_t
@@ -33,7 +33,7 @@ public:
     virtual void FunctionSet(FontSize size, DisplayLines lines) = 0;
 }
 
-class LcdI2cBackpack : public BackpackInterface
+class LcdI2cBackpack : public LcdBackpackInterface
 {
 public:
     //Display entry mode
