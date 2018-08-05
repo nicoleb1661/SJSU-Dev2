@@ -1,4 +1,3 @@
-
 #include "LcdI2cBackpack.hpp"
 
 // Slave address: 40h for write, 41h for read
@@ -137,7 +136,7 @@ void LcdI2cBackpack::DisplayControl(bool on, bool show_cursor, bool blink_cursor
     }
 }
 
-void I2CBackpack::SetFont(FontSize size)
+void LcdI2cBackpack::SetFont(FontSize size)
 {
     display_control_ |= size;
 }
