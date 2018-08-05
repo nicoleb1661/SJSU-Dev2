@@ -21,14 +21,12 @@ public:
     virtual void Init() = 0;
     virtual void Set4BitMode() = 0;
     virtual void ClearScreen() = 0;
-    virtual void SetPosition(uint8_t row, uint8_t col) = 0;
     virtual void ReturnHome() = 0;
     virtual void PrintChar() = 0;
     virtual void CursorControl(bool show_cursor, bool blink_cursor) = 0;
     virtual void SetLineDisplay(DisplayLines lines) = 0;
     virtual bool CheckBusyFlag() = 0;
     virtual void DisplayControl() = 0;
-    virtual void ShiftCursor() = 0;
     virtual void SetFont(FontSize size) = 0;
     virtual void FunctionSet(FontSize size, DisplayLines lines) = 0;
 }
@@ -37,8 +35,6 @@ class LcdI2cBackpack : public LcdBackpackInterface
 {
 public:
     //Display entry mode
-    static constexpr uint8_t kShiftDecrement = 0x00;
-    static constexpr uint8_t kShiftIncrement = 0x01;
     static constexpr uint8_t kRightEntry = 0x00;
     static constexpr uint8_t kLeftEntry = 0x02;
     // Display control variables
@@ -51,8 +47,6 @@ public:
     // Display and cursor shift members
     static constexpr uint8_t kCursorMove = 0x00;
     static constexpr uint8_t kDisplayMove = 0x08;
-    static constexpr uint8_t kMoveLeft = 0x00;
-    static constexpr uint8_t kMoveRight = 0x04;
     // Function set members
     static constexpr uint8_t kFourBitMode = 0x00;
     static constexpr uint8_t kEightBitMode = 0x10;
@@ -83,7 +77,6 @@ public:
     bool Init() override;
     void Set4BitMode() override;
     void ClearScreen() override;
-    void SetPosition(uint8_t row, uint8_t  col) override;
     void ReturnHome() override;
     void PrintChar() override;
     void CursorControl(bool show_cursor, bool blink_cursor) override; //Replaces NoCursor DisplayCursor, BlinkChar, and SolidChar
@@ -97,9 +90,11 @@ public:
 private:
     uint8_t device_address_read_;
     uint8_t device_address_write_;
-    uint8_t col_;
-    uint8_t row_;
+    uint8_t display_function_;
+    uint8_t display_control_;
+    uint8_t display_mode_;
     void Write(uint8_t address, uint8_t data);
     void Read(uint8_t address)const;
 };
+
 
