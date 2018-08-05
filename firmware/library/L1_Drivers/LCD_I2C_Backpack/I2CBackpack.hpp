@@ -33,7 +33,7 @@ public:
     virtual void FunctionSet(FontSize size, DisplayLines lines) = 0;
 }
 
-class I2CBackpack : public BackpackInterface
+class LcdI2cBackpack : public BackpackInterface
 {
 public:
     //Display entry mode
@@ -79,7 +79,7 @@ public:
         kReadWriteBit = 0x02,
         kRegisterSelectBit = 0x01,
     };
-    I2CBackpack(uint8_t address_read, uint8_t address_write);
+    LcdI2cBackpack(uint8_t address_read, uint8_t address_write);
     bool Init() override;
     void Set4BitMode() override;
     void ClearScreen() override;
@@ -93,7 +93,7 @@ public:
     void ShiftCursor() override;
     void SetFont(FontSize size) override;
     void FunctionSet(FontSize size, DisplayLines lines) override;
-    ~I2CBackpack();
+    ~LcdI2cBackpack();
 private:
     uint8_t device_address_read_;
     uint8_t device_address_write_;
