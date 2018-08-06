@@ -7,15 +7,15 @@
 const uint8_t numeral[10][8] =
 {
     [0] = 0b0011'0000,
-    [1] =
-    [2] =
-    [3] =
-    [4] =
-    [5] =
-    [6] =
-    [7] =
-    [8] =
-    [9] =
+    [1] = 0b0011'0001,
+    [2] = 0b0011'0010,
+    [3] = 0b0011'0011,
+    [4] = 0b0011'0100,
+    [5] = 0b0011'0101,
+    [6] = 0b0011'0110,
+    [7] = 0b0011'0111,
+    [8] = 0b0011'1000,
+    [9] = 0b0011'1001
 };
 
 const uint8_t alphabet[26][8] =
@@ -76,34 +76,37 @@ const uint8_t alphabet[26][8] =
 
 const uint8_t symbol[10][8] =
 {
-    // ! = 0
-
-    // " = 1
-
-    // ' = 2
-
-    // ( = 3
-
-    // ) = 4
-
-    // , = 5
-
-    // . = 6
-
-    // : = 7
-
-    // ; = 8
-
-    // ? = 9
+    // Blank space = 0
+    [0] = 0b0010'0000,
+    // ! = 1
+    [1] = 0b0010'0001,
+    // " = 2
+    [2] = 0b0010'0010,
+    // ' = 3
+    [3] = 0b0010'0111,
+    // ( = 4
+    [4] = 0b0010'1000,
+    // ) = 5
+    [5] = 0b0010'1001,
+    // , = 6
+    [6] = 0b0010'1100,
+    // . = 7
+    [7] = 0b0010'1110,
+    // : = 8
+    [8] = 0b0011'1010,
+    // ; = 9
+    [9] = 0b0011'1011,
+    // ? = 10
+    [10] = 0b0011'1111
 };
 
 LcdI2cBackpack::LcdI2cBackpack(uint8_t address_read, uint8_t address_write)
 {
     device_address_read_ = address_read;
     device_address_write_ = address_write;
-    display_function_ = 0x00;
-    display_control_ = 0x00;
-    display_mode_ = 0x00;
+    display_function_ = 0b0000'0000;
+    display_control_ = 0b0000'0000;
+    display_mode_ = 0b0000'0000;
 }
 
 /* An internal reset occurs at power on executing the
@@ -123,8 +126,8 @@ LcdI2cBackpack::LcdI2cBackpack(uint8_t address_read, uint8_t address_write)
  */
 bool I2CBackpack::Init(FontSize size, DisplayLines lines) //initializes the LCD
 {
-    uint8_t clear = 0x00;
-    uint8_t function_set = 0x03;
+    uint8_t clear = 0b0000'0000;
+    uint8_t function_set = 0b0000'0011;
     uint32_t pclk = 48;
     uint32_t bus_rate = 100;
     //call I2C driver init
@@ -158,7 +161,7 @@ bool I2CBackpack::Init(FontSize size, DisplayLines lines) //initializes the LCD
 // When 4 bit length is selected, data must be sent or received twice
 void LcdI2cBackpack::Set4BitMode()
 {
-    uint8_t fourBitMode = (0x02);
+    uint8_t fourBitMode = (0b0000'0010);
     Write(fourBitMode, fourBitMode);
 }
 
