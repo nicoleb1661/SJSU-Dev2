@@ -8,7 +8,7 @@
 class LcdBackpackInterface
 {
 public:
-    enum FontSize : uint8_t
+    enum class FontSize : uint8_t
     {
         kSmall = 0b0000'0000,
         kLarge = 0b0000'0100
