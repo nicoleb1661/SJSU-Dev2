@@ -10,13 +10,13 @@ class LcdBackpackInterface
 public:
     enum FontSize : uint8_t
     {
-        kSmall = 0x00,
-        kLarge = 0x04,
+        kSmall = 0b0000'0000,
+        kLarge = 0b0000'0100
     };
-    enum DisplayLines : uint8_t
+    enum class DisplayLines : uint8_t
     {
-        kOne = 0x00,
-        kTwo = 0x08,
+        kOne = 0b0000'0000,
+        kTwo = 0b0000'1000
     };
     virtual void Init() = 0;
     virtual void Set4BitMode() = 0;
@@ -34,42 +34,41 @@ class LcdI2cBackpack : public LcdBackpackInterface
 {
 public:
     //Display entry mode
-    static constexpr uint8_t kRightEntry = 0x00;
-    static constexpr uint8_t kLeftEntry = 0x02;
+    static constexpr uint8_t kRightEntry = 0x0000'0000;
+    static constexpr uint8_t kLeftEntry = 0x0000'0010;
     // Display control variables
-    static constexpr uint8_t kDisplayOff = 0x00;
-    static constexpr uint8_t kDisplayOn = 0x04;
-    static constexpr uint8_t kCursorOff = 0x00;
-    static constexpr uint8_t kCursorOn = 0x02;
-    static constexpr uint8_t kBlinkOff = 0x00;
-    static constexpr uint8_t kBlinkOn = 0x01;
+    static constexpr uint8_t kDisplayOff = 0x0000'00;
+    static constexpr uint8_t kDisplayOn = 0x0000'0100;
+    static constexpr uint8_t kCursorOff = 0x0000'0000;
+    static constexpr uint8_t kCursorOn = 0x0000'0010;
+    static constexpr uint8_t kBlinkOff = 0x0000'0000;
+    static constexpr uint8_t kBlinkOn = 0x0000'0001;
     // Display and cursor shift members
-    static constexpr uint8_t kCursorMove = 0x00;
-    static constexpr uint8_t kDisplayMove = 0x08;
+    static constexpr uint8_t kCursorMove = 0x0000'0000;
+    static constexpr uint8_t kDisplayMove = 0x0000'1000;
     // Function set members
-    static constexpr uint8_t kFourBitMode = 0x00;
-    static constexpr uint8_t kEightBitMode = 0x10;
+    static constexpr uint8_t kFourBitMode = 0x0000'0000;
+    static constexpr uint8_t kEightBitMode = 0x0001'0000;
     // Enums
-    enum Commands : uint8_t
+    enum class Commands : uint8_t
     {
-        kClearDisplay = 0x01,
-        kReturnHome = 0x02,
-        kEntryModeSet = 0x04,
-        kDisplayControl = 0x08,
-        kFunctionSet = 0x20,
-        kSetCgramAddress = 0x40,
-        kSetDdramAddress = 0x80,
+        kClearDisplay = 0x0000'0001,
+        kReturnHome = 0x0000'0010,
+        kEntryModeSet = 0x0000'0100,
+        kDisplayControl = 0x0000'1000,
+        kSetCgramAddress = 0x0100'0000,
+        kSetDdramAddress = 0x1000'0000
     };
-    enum BacklightControl : uint8_t
+    enum class BacklightControl : uint8_t
     {
-        kBacklightOff = 0x00
-        kBacklightOn = 0x08,
+        kBacklightOff = 0x0000'0000,
+        kBacklightOn = 0x0000'1000
     };
-    enum BitAssignments : uint8_t
+    enum class BitAssignments : uint8_t
     {
-        kEnableBit = 0x04;
-        kReadWriteBit = 0x02,
-        kRegisterSelectBit = 0x01,
+        kEnableBit = 0x0000'0100,
+        kReadWriteBit = 0x0000'0010,
+        kRegisterSelectBit = 0x0000'0001
     };
     LcdI2cBackpack(uint8_t address_read, uint8_t address_write);
     bool Init() override;
@@ -93,5 +92,3 @@ private:
     void Write(uint8_t address, uint8_t data);
     void Read(uint8_t address)const;
 };
-
-
