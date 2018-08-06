@@ -4,6 +4,98 @@
 // This backpack requires data transfer in 4-bit mode
 // 4-bit transfers require all data to be written twice
 
+const uint8_t numeral[10][8] =
+{
+    [0] = 0b0011'0000,
+    [1] =
+    [2] =
+    [3] =
+    [4] =
+    [5] =
+    [6] =
+    [7] =
+    [8] =
+    [9] =
+};
+
+const uint8_t alphabet[26][8] =
+{
+    // A = 0
+
+    // B = 1
+
+    // C = 2
+
+    // D = 3
+
+    // E = 4
+
+    // F = 5
+
+    // G = 6
+
+    // H = 7
+
+    // I = 8
+
+    // J = 9
+
+    // K = 10
+
+    // L = 11
+
+    // M = 12
+
+    // N = 13
+
+    // O = 14
+
+    // P = 15
+
+    // Q = 16
+
+    // R = 17
+
+    // S = 18
+
+    // T = 19
+
+    // U = 20
+
+    // V = 21
+
+    // W = 22
+
+    // X = 23
+
+    // Y = 24
+
+    // Z = 25
+};
+
+const uint8_t symbol[10][8] =
+{
+    // ! = 0
+
+    // " = 1
+
+    // ' = 2
+
+    // ( = 3
+
+    // ) = 4
+
+    // , = 5
+
+    // . = 6
+
+    // : = 7
+
+    // ; = 8
+
+    // ? = 9
+};
+
 LcdI2cBackpack::LcdI2cBackpack(uint8_t address_read, uint8_t address_write)
 {
     device_address_read_ = address_read;
@@ -82,13 +174,13 @@ void LcdI2cBackpack::ReturnHome()
 
 void LcdI2cBackpack::PrintChar()
 {
-    
+
 }
 
 void LcdI2cBackpack::CursorControl(bool show_cursor, bool blink_cursor)
 {
     uint8_t cursor_option = 0;
-    
+
     if(show_cursor) // DB1 == 1
     {
         cursor_option = kCursorOn | kDisplayOn;
@@ -119,7 +211,7 @@ void LcdI2cBackpack::SetLineDisplay(DisplayLines lines)
 
 bool LcdI2cBackpack::CheckBusyFlag()
 {
-    
+
     return true;
 }
 
