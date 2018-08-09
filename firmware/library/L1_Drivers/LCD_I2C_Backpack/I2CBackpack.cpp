@@ -4,7 +4,7 @@
 // This backpack requires data transfer in 4-bit mode
 // 4-bit transfers require all data to be written twice
 
-const uint8_t numeral[10][8] =
+const uint8_t LcdI2cBackpack::kNumeral[10] =
 {
     [0] = 0b0011'0000,
     [1] = 0b0011'0001,
@@ -18,7 +18,7 @@ const uint8_t numeral[10][8] =
     [9] = 0b0011'1001
 };
 
-const uint8_t alphabet[26][8] =
+const uint8_t LcdI2cBackpack::kAlphabet[26] =
 {
     // A = 0
     [0] = 0b0100'0001,
@@ -74,7 +74,7 @@ const uint8_t alphabet[26][8] =
     [25] = 0b0101'1010
 };
 
-const uint8_t symbol[10][8] =
+const uint8_t LcdI2cBackpack::kSymbol[11] =
 {
     // Blank space = 0
     [0] = 0b0010'0000,
@@ -105,8 +105,6 @@ LcdI2cBackpack::LcdI2cBackpack(uint8_t address_read, uint8_t address_write)
     device_address_read_ = address_read;
     device_address_write_ = address_write;
     display_function_ = 0b0000'0000;
-    display_control_ = 0b0000'0000;
-    display_mode_ = 0b0000'0000;
 }
 
 /* An internal reset occurs at power on executing the
@@ -124,10 +122,8 @@ LcdI2cBackpack::LcdI2cBackpack(uint8_t address_read, uint8_t address_write)
  *    Increment by 1
  *    No shift
  */
-bool I2CBackpack::Init(FontSize size, DisplayLines lines) //initializes the LCD
+bool LcdI2cBackpack::Init(FontSize size, DisplayLines lines) //initializes the LCD
 {
-    uint8_t clear = 0b0000'0000;
-    uint8_t function_set = 0b0000'0011;
     uint32_t pclk = 48;
     uint32_t bus_rate = 100;
     //call I2C driver init
@@ -135,18 +131,16 @@ bool I2CBackpack::Init(FontSize size, DisplayLines lines) //initializes the LCD
     // Wait for 50ms after Vcc rises to 2.7V
     delay_ms(50);
     // Clear the register
-    Write(clear, clear);
+    Write(kClearRegister, kClearRegister);
     // Write start up bits
-    Write(function_set, function_set);
+    Write(kEightBitMode, kEightBitMode);
     delay_ms(5);
-    Write(function_set, function_set);
+    Write(kEightBitMode, kEightBitMode);
     delay_ms(1);
-    Write(function_set, function_set);
+    Write(kEightBitMode, kEightBitMode);
     // Set interface to 4-bit mode
-    Set4BitMode();
     // Set number of lines and font size
-    SetFont(size);
-    SetLineDisplay(lines);
+    FunctionSet(size, lines);
     // Turn display on with no cursor or blinking
     DisplayControl();
     ClearScreen();
@@ -159,10 +153,9 @@ bool I2CBackpack::Init(FontSize size, DisplayLines lines) //initializes the LCD
 
 // Pin configuration requires 4 bit data transfer
 // When 4 bit length is selected, data must be sent or received twice
-void LcdI2cBackpack::Set4BitMode()
+uint8_t LcdI2cBackpack::Set4BitMode()
 {
-    uint8_t fourBitMode = (0b0000'0010);
-    Write(fourBitMode, fourBitMode);
+    return display_function_ |= kFourBitMode;
 }
 
 void LcdI2cBackpack::ClearScreen()
@@ -224,7 +217,7 @@ bool LcdI2cBackpack::PrintChar(char input)
 void LcdI2cBackpack::CursorControl(bool show_cursor, bool blink_cursor)
 {
     uint8_t cursor_option = 0;
-
+    
     if(show_cursor) // DB1 == 1
     {
         cursor_option = kCursorOn | kDisplayOn;
@@ -247,19 +240,30 @@ void LcdI2cBackpack::CursorControl(bool show_cursor, bool blink_cursor)
     }
 }
 
-
-void LcdI2cBackpack::SetLineDisplay(DisplayLines lines)
+uint8_t LcdI2cBackpack::SetLineDisplay(DisplayLines lines) //Select 1, 2, or 4 lines
 {
-    display_function_ |= lines;
+    return display_function_ |= lines;
+    //TODO: Error check if font is large then can only be one line
 }
 
 bool LcdI2cBackpack::CheckBusyFlag()
 {
-
-    return true;
+    bool busy_flag_set;
+    
+    Write(kReadWriteBitSet, kReadWriteBitSet);
+    if(Read(kBusyFlag))
+    {
+        busy_flag_set = true;
+    }
+    else
+    {
+        busy_flag_set = false;
+    }
+    Write(kReadWriteBitClr, kReadWriteBitClr);
+    return busy_flag_set;
 }
 
-void LcdI2cBackpack::DisplayControl(bool on, bool show_cursor, bool blink_cursor)
+void LcdI2cBackpack::DisplayControl()
 {
     if(on) // Turn on display
     {
@@ -272,14 +276,29 @@ void LcdI2cBackpack::DisplayControl(bool on, bool show_cursor, bool blink_cursor
     }
 }
 
-void LcdI2cBackpack::SetFont(FontSize size)
+uint8_t LcdI2cBackpack::SetFont(FontSize size)
 {
-    display_control_ |= size;
+    return display_function_ |= size;
+}
+
+void LcdI2cBackpack::FunctionSet(FontSize size, DisplayLines lines)
+{
+    display_function_ |= Set4BitMode();
+    display_function_ |= SetFont(size);
+    if(size == kSmall)
+    {
+        display_function_ |= SetLineDisplay(lines);
+    }
+    else
+    {
+        display_function_ |= kTwo;
+    }
+    Write(display_function_, display_function_);
 }
 
 LcdI2cBackpack::~LcdI2cBackpack()
 {
-
+    
 }
 
 void LcdI2cBackpack::Write(uint8_t address, uint8_t data)
@@ -287,7 +306,7 @@ void LcdI2cBackpack::Write(uint8_t address, uint8_t data)
     writeReg(device_address_write_, address, data);
 }
 
-void LcdI2cBackpack::Read(uint8_t address) const
+bool LcdI2cBackpack::Read(uint8_t address) const
 {
-    readReg(device_address_read_, address);
+    return readReg(device_address_read_, address);
 }
