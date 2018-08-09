@@ -176,37 +176,45 @@ bool LcdI2cBackpack::PrintChar(char input)
     
     if(ascii_value >= 65 && ascii_value <= 90) // Letters
     {
+        Write(kAlphabet[ascii_value - 65], kAlphabet[ascii_value - 65]);
         char_sent = true;
     }
-    else if(acii_value >= 48 && ascii_value <= 57) // Numbers
+    else if(acii_value >= 48 && ascii_value <= 57) // Numbers 0 - 9
     {
+        Write(kNumeral[ascii_value - 48], kNUmeral[ascii_value - 48]);
         char_sent = true;
     }
-    else if(ascii_value >=32 && ascii_value <= 34) // symbols: space, !, "
+    else if(ascii_value >=32 && ascii_value <= 34) // symbols-> space !  "
     {
+        Write(kSymbol[ascii_value - 32], kSymbol[ascii_value - 32]);
         char_sent = true;
     }
-    else if(ascii_value >= 39 && ascii_value <= 41) // symbols: ', (, )
+    else if(ascii_value >= 39 && ascii_value <= 41) // symbols-> '  (  )
     {
+        Write(kSymbol[ascii_value - 36], kSymbol[ascii_value - 36]);
         char_sent = true;
     }
-    else if (ascii_value == 44) // symbol: ,
+    else if (ascii_value == 44) // symbol-> ,
     {
+        Write(kSymbol[6], kSymbol[6]);
         char_sent = true;
     }
-    else if(ascii_value == 46) // symbol: .
+    else if(ascii_value == 46) // symbol-> .
     {
+        Write(kSymbol[7], kSymbol[7]);
         char_sent = true;
     }
-    else if(ascii_value >= 58 && ascii_value <= 59)//:, ;
+    else if(ascii_value >= 58 && ascii_value <= 59)// Symbols-> :  ;
     {
+        Write(kSymbol[ascii_value - 50], kSymbol[ascii_value - 50]);
         char_sent = true;
     }
-    else if(ascii_value == 63)// ?
+    else if(ascii_value == 63)// Symbol-> ?
     {
+        Write(kSymbol[10], kSymbol[10]);
         char_sent = true;
     }
-    else
+    else // Not a valid input
     {
         char_sent = false;
     }
