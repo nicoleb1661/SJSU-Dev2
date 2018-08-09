@@ -176,9 +176,49 @@ void LcdI2cBackpack::ReturnHome()
     Write(kReturnHome, kReturnHome);
 }
 
-void LcdI2cBackpack::PrintChar()
+bool LcdI2cBackpack::PrintChar(char input)
 {
-
+    uint8_t ascii_value = (uint8_t)input;
+    bool char_sent = false;
+    
+    if(ascii_value >= 65 && ascii_value <= 90) // Letters
+    {
+        char_sent = true;
+    }
+    else if(acii_value >= 48 && ascii_value <= 57) // Numbers
+    {
+        char_sent = true;
+    }
+    else if(ascii_value >=32 && ascii_value <= 34) // symbols: space, !, "
+    {
+        char_sent = true;
+    }
+    else if(ascii_value >= 39 && ascii_value <= 41) // symbols: ', (, )
+    {
+        char_sent = true;
+    }
+    else if (ascii_value == 44) // symbol: ,
+    {
+        char_sent = true;
+    }
+    else if(ascii_value == 46) // symbol: .
+    {
+        char_sent = true;
+    }
+    else if(ascii_value >= 58 && ascii_value <= 59)//:, ;
+    {
+        char_sent = true;
+    }
+    else if(ascii_value == 63)// ?
+    {
+        char_sent = true;
+    }
+    else
+    {
+        char_sent = false;
+    }
+    
+    return char_sent;
 }
 
 void LcdI2cBackpack::CursorControl(bool show_cursor, bool blink_cursor)

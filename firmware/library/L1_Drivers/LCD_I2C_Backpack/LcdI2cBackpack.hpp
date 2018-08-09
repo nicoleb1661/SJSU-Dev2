@@ -22,7 +22,7 @@ public:
     virtual void Set4BitMode() = 0;
     virtual void ClearScreen() = 0;
     virtual void ReturnHome() = 0;
-    virtual void PrintChar() = 0;
+    virtual void PrintChar(char input) = 0;
     virtual void CursorControl(bool show_cursor, bool blink_cursor) = 0;
     virtual void SetLineDisplay(DisplayLines lines) = 0;
     virtual bool CheckBusyFlag() = 0;
