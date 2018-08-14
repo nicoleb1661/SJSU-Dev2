@@ -20,15 +20,15 @@ public:
         kOne = 0b0000'0000,
         kTwo = 0b0000'1000
     };
-    virtual void Init() = 0;
-    virtual void Set4BitMode() = 0;
+    virtual bool Init(FontSize size, DisplayLines lines) = 0;
+    virtual uint8_t Set4BitMode() = 0;
     virtual void ClearScreen() = 0;
     virtual void ReturnHome() = 0;
     virtual bool PrintChar() = 0;
     virtual void CursorControl(bool show_cursor, bool blink_cursor) = 0;
     virtual uint8_t SetLineDisplay(DisplayLines lines) = 0;
     virtual bool CheckBusyFlag() = 0;
-    virtual void DisplayControl() = 0;
+    virtual void DisplayControl(bool is_on, bool show_cursor, bool blink_cursor) = 0;
     virtual void FunctionSet(FontSize size, DisplayLines lines) = 0;
     virtual uint8_t SetFont(FontSize size) = 0;
 }
@@ -36,6 +36,7 @@ public:
 class LcdI2cBackpack : public I2cLcdInterface
 {
 public:
+    I2C_Base * i2c;
     //Display entry mode
     static constexpr uint8_t kRightEntry = 0b0000'0000;
     static constexpr uint8_t kLeftEntry = 0b0000'0010;
@@ -82,17 +83,17 @@ public:
     static const uint8_t kSymbol[11];
     
     LcdI2cBackpack(uint8_t address_read, uint8_t address_write);
-    bool Init() override;
+    bool Init(I2cLcdInterface::FontSize size, I2cLcdInterface::DisplayLines lines) override;
     uint8_t Set4BitMode() override;
     void ClearScreen() override;
     void ReturnHome() override;
     bool PrintChar() override;
     void CursorControl(bool show_cursor, bool blink_cursor) override;
-    uint8_t SetLineDisplay(DisplayLines lines) override;
+    uint8_t SetLineDisplay(I2cLcdInterface::DisplayLines lines) override;
     bool CheckBusyFlag() override;
-    void DisplayControl() override;
-    uint8_t SetFont(FontSize size) override;
-    void FunctionSet(FontSize size, DisplayLines lines) override;
+    void DisplayControl(bool is_on, bool show_cursor, bool blink_cursor) override;
+    uint8_t SetFont(I2cLcdInterface::FontSize size) override;
+    void FunctionSet(I2cLcdInterface::FontSize size, I2cLcdInterface::DisplayLines lines) override;
     ~LcdI2cBackpack();
 private:
     uint8_t device_address_read_;
