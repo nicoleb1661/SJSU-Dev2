@@ -180,9 +180,9 @@ bool LcdI2cBackpack::PrintChar(char input)
         Write(kAlphabet[ascii_value - 65], kAlphabet[ascii_value - 65]);
         char_sent = true;
     }
-    else if(acii_value >= 48 && ascii_value <= 57) // Numbers 0 - 9
+    else if(ascii_value >= 48 && ascii_value <= 57) // Numbers 0 - 9
     {
-        Write(kNumeral[ascii_value - 48], kNUmeral[ascii_value - 48]);
+        Write(kNumeral[ascii_value - 48], kNumeral[ascii_value - 48]);
         char_sent = true;
     }
     else if(ascii_value >=32 && ascii_value <= 34) // symbols-> space !  "
